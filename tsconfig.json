@@ -15,8 +15,8 @@
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
 
-    "types": ["bun"],
+    "types": ["bun"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules"],
+  "exclude": ["dist", "node_modules"]
 }
