@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "es-di",
+      "name": "navi-di",
       "devDependencies": {
         "@types/bun": "1.3.11",
         "lefthook": "^2.1.4",

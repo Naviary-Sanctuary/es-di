@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for contributing to `es-di`.
+Thank you for contributing to `navi-di`.
 
 ## Scope
 

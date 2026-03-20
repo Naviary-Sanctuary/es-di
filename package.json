@@ -1,5 +1,5 @@
 {
-  "name": "es-di",
+  "name": "navi-di",
   "version": "0.1.0",
   "description": "Dependency injection for standard ECMAScript decorators.",
   "keywords": [
@@ -11,14 +11,14 @@
     "node",
     "typescript"
   ],
-  "homepage": "https://github.com/Naviary-Sanctuary/es-di#readme",
+  "homepage": "https://github.com/Naviary-Sanctuary/navi-di#readme",
   "bugs": {
-    "url": "https://github.com/Naviary-Sanctuary/es-di/issues"
+    "url": "https://github.com/Naviary-Sanctuary/navi-di/issues"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Naviary-Sanctuary/es-di.git"
+    "url": "git+https://github.com/Naviary-Sanctuary/navi-di.git"
   },
   "files": [
     "dist",

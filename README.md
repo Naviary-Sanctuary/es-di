@@ -1,16 +1,16 @@
-# es-di
+# navi-di
 
-`es-di` is a dependency injection library built for standard ECMAScript decorators.
+`navi-di` is a dependency injection library built for standard ECMAScript decorators.
 
 ## Installation
 
-`es-di` can be installed with any common JavaScript package manager:
+`navi-di` can be installed with any common JavaScript package manager:
 
 ```sh
-npm install es-di
-pnpm add es-di
-yarn add es-di
-bun add es-di
+npm install navi-di
+pnpm add navi-di
+yarn add navi-di
+bun add navi-di
 ```
 
 The current implementation focuses on a compact core:
@@ -57,7 +57,7 @@ The package root currently exports:
 ## Quick start
 
 ```ts
-import { Container, Inject, Service } from 'es-di';
+import { Container, Inject, Service } from 'navi-di';
 
 @Service()
 class LoggerService {
@@ -74,7 +74,7 @@ class HandlerService {
 
 const handler = Container.of().get(HandlerService);
 
-handler.logger.log('hello from es-di');
+handler.logger.log('hello from navi-di');
 ```
 
 How resolution works:
@@ -86,7 +86,7 @@ How resolution works:
 
 ## Service lifetimes
 
-`es-di` currently supports three scopes.
+`navi-di` currently supports three scopes.
 
 ### `container`
 
@@ -138,7 +138,7 @@ Options supported today:
 Example with a custom id:
 
 ```ts
-import { Container, Service } from 'es-di';
+import { Container, Service } from 'navi-di';
 
 @Service({ id: 'logger', scope: 'singleton' })
 class LoggerService {}

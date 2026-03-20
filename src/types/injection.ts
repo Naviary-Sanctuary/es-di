@@ -5,4 +5,4 @@ export interface InjectionMetadata {
   name: string | symbol;
 }
 
-export const INJECTION_KEY = Symbol.for('es-di:injections');
+export const INJECTION_KEY = Symbol.for('navi-di:injections');
