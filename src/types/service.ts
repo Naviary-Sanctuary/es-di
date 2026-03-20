@@ -9,6 +9,6 @@ export type ServiceIdentifier<T = unknown, Args extends unknown[] = never[]> =
 export type ServiceScope = 'singleton' | 'container' | 'transient';
 
 export interface ServiceOption {
-  id: ServiceIdentifier;
+  id?: ServiceIdentifier;
   scope?: ServiceScope;
 }

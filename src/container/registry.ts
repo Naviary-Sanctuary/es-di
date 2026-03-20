@@ -18,4 +18,28 @@ export class ContainerRegistry {
 
     this.containerMap.set(container.id, container);
   }
+
+  public static getContainer(id: ContainerIdentifier): Container | undefined {
+    if (id === 'default') {
+      return this.defaultContainer;
+    }
+
+    return this.containerMap.get(id);
+  }
+
+  public static hasContainer(id: ContainerIdentifier): boolean {
+    if (id === 'default') {
+      return true;
+    }
+
+    return this.containerMap.has(id);
+  }
+
+  public static removeContainer(id: ContainerIdentifier) {
+    if (id === 'default') {
+      throw new DefaultContainerIdError();
+    }
+
+    this.containerMap.delete(id);
+  }
 }

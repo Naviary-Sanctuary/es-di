@@ -1,6 +1,7 @@
 import { CircularDependencyError, ServiceNotFoundError } from '../errors';
 import type { ContainerIdentifier, Metadata, ServiceIdentifier } from '../types';
 import { EMPTY_VALUE } from '../types';
+import { ContainerRegistry } from './registry';
 
 export class Container {
   public readonly id: ContainerIdentifier;
@@ -13,7 +14,29 @@ export class Container {
     this.id = id;
   }
 
+  public static of(id: ContainerIdentifier = 'default') {
+    if (id === 'default') {
+      return ContainerRegistry.defaultContainer;
+    }
+
+    if (ContainerRegistry.hasContainer(id)) {
+      return ContainerRegistry.getContainer(id);
+    }
+
+    const container = new Container(id);
+
+    ContainerRegistry.registerContainer(container);
+
+    return container;
+  }
+
   public set<T>(metadata: Metadata<T>) {
+    if (metadata.scope === 'singleton' && !this.isDefault()) {
+      ContainerRegistry.defaultContainer.set(metadata);
+      this.metadataMap.delete(metadata.id);
+      return;
+    }
+
     const newMetadata: Metadata<T> = {
       ...metadata,
     };
@@ -27,18 +50,52 @@ export class Container {
     }
   }
 
-  public reset() {
-    this.metadataMap.clear();
+  public has(id: ServiceIdentifier): boolean {
+    return this.metadataMap.has(id);
+  }
+
+  public reset(strategy: 'value' | 'service' = 'value') {
+    if (strategy === 'value') {
+      this.metadataMap.forEach((metadata) => {
+        metadata.value = EMPTY_VALUE;
+      });
+    } else {
+      this.metadataMap.clear();
+    }
   }
 
   public get<T>(id: ServiceIdentifier<T>): T {
-    const metadata = this.metadataMap.get(id);
+    let metadata = this.metadataMap.get(id);
+
+    if (!metadata && !this.isDefault()) {
+      const defaultMetadata = ContainerRegistry.defaultContainer.metadataMap.get(id);
+
+      if (!defaultMetadata) {
+        throw new ServiceNotFoundError(id);
+      }
+
+      if (defaultMetadata.scope === 'singleton') {
+        return ContainerRegistry.defaultContainer.get(id);
+      }
+
+      if (defaultMetadata.scope === 'container') {
+        metadata = {
+          ...defaultMetadata,
+          injections: [...defaultMetadata.injections],
+          value: EMPTY_VALUE,
+        };
+
+        this.metadataMap.set(id, metadata);
+      } else {
+        metadata = defaultMetadata;
+      }
+    }
 
     if (!metadata) {
       throw new ServiceNotFoundError(id);
     }
 
-    if (metadata.value !== EMPTY_VALUE) {
+    if (metadata.scope !== 'transient' && metadata.value !== EMPTY_VALUE) {
       return metadata.value as T;
     }
 
@@ -69,5 +126,9 @@ export class Container {
       this.resolving.delete(id);
       this.resolvingPath.pop();
     }
+  }
+
+  private isDefault() {
+    return this === ContainerRegistry.defaultContainer;
   }
 }
